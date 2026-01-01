@@ -5,7 +5,8 @@
             "includePath": [
                 "${workspaceFolder}/lib",
                 "${workspaceFolder}/external/glm",
-                "${workspaceFolder}/**"
+                "${workspaceFolder}/**",
+                "C:/VulkanSDK/1.4.328.1/Include"
             ],
             "defines": [
                 "_DEBUG",
