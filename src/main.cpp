@@ -7,48 +7,9 @@
 #include <iostream>
 
 #include "instance/instance.hpp"
+#include "../renderer/window/hWnd.h"
 
 HINSTANCE g_hInstance;
-HWND g_hWnd;
-
-LRESULT CALLBACK WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
-{
-    if (msg == WM_DESTROY)
-    {
-        PostQuitMessage(0);
-        return 0;
-    }
-    return DefWindowProc(hwnd, msg, wParam, lParam);
-}
-
-HWND CreateVulkanWindow(uint32_t width, uint32_t height)
-{
-
-    const wchar_t* CLASS_NAME = L"VulkanWindowClass";
-
-    WNDCLASSW wc{};
-    wc.lpfnWndProc = WindowProc;
-    wc.hInstance = g_hInstance;
-    wc.lpszClassName = CLASS_NAME;
-
-    RegisterClassW(&wc);
-
-    HWND hwnd = CreateWindowExW(
-        0,
-        CLASS_NAME,
-        L"Vulkan Win32 Window",
-        WS_OVERLAPPEDWINDOW,
-        CW_USEDEFAULT, CW_USEDEFAULT,
-        width, height,
-        nullptr,
-        nullptr,
-        g_hInstance,
-        nullptr
-    );
-
-    ShowWindow(hwnd, SW_SHOW);
-    return hwnd;
-}
 
 VkSurfaceKHR CreateSurface(VkInstance instance)
 {
@@ -75,7 +36,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int)
 
     g_hInstance = hInstance;
 
-    g_hWnd = CreateVulkanWindow(800, 600);
+    g_hWnd = CreateVulkanWindow(800, 600, g_hInstance);
 
     VkInstance instance = CreateVulkanInstance();
     VkSurfaceKHR surface = CreateSurface(instance);
