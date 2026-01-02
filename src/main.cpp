@@ -1,5 +1,3 @@
-#define WIN32_LEAN_AND_MEAN
-
 #include <windows.h>
 #include "vulkan/vulkan_common.h"
 #include <vector>
@@ -8,22 +6,9 @@
 
 #include "instance/instance.hpp"
 #include "../renderer/window/hWnd.h"
+#include "../renderer/surface/surface.h"
 
 HINSTANCE g_hInstance;
-
-VkSurfaceKHR CreateSurface(VkInstance instance)
-{
-    VkWin32SurfaceCreateInfoKHR ci{};
-    ci.sType = VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR;
-    ci.hinstance = g_hInstance;
-    ci.hwnd = g_hWnd;
-
-    VkSurfaceKHR surface;
-    if (vkCreateWin32SurfaceKHR(instance, &ci, nullptr, &surface) != VK_SUCCESS)
-        throw std::runtime_error("Failed to create surface");
-
-    return surface;
-}
 
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int)
 {
@@ -39,7 +24,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int)
     g_hWnd = CreateVulkanWindow(800, 600, g_hInstance);
 
     VkInstance instance = CreateVulkanInstance();
-    VkSurfaceKHR surface = CreateSurface(instance);
+    VkSurfaceKHR surface = CreateSurface(instance, g_hWnd, g_hInstance);
 
     MSG msg{};
     while (msg.message != WM_QUIT)
