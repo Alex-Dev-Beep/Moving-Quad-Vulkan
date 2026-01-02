@@ -8,6 +8,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 file(GLOB_RECURSE SRC_FILES
     src/*.cpp
+    renderer/*.cpp
 )
 
 add_executable(${PROJECT_NAME} WIN32
@@ -35,6 +36,7 @@ if (WIN32)
     add_compile_definitions(
         UNICODE
         _UNICODE
+        VK_USE_PLATFORM_WIN32_KHR
     )
 endif()
 
