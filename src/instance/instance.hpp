@@ -1,3 +1,6 @@
-#include "vulkan/vulkan_common.h"
+#pragma once
 
-VkInstance CreateVulkanInstance();
+#include "../vulkan/vulkan_common.h"
+
+VkResult createVulkanInstance(VkInstance* instance);
+void destroyVulkanInstance(VkInstance instance);

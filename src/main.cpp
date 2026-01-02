@@ -20,10 +20,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int)
     #endif
 
     g_hInstance = hInstance;
-
     g_hWnd = CreateVulkanWindow(800, 600, g_hInstance);
-
-    VkInstance instance = CreateVulkanInstance();
+    
+    VkInstance instance;
+    
+    if (createVulkanInstance(&instance) != VK_SUCCESS) {
+        throw std::runtime_error("Failed to create Vulkan instance");
+    }
     VkSurfaceKHR surface = CreateSurface(instance, g_hWnd, g_hInstance);
 
     MSG msg{};
@@ -37,6 +40,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int)
     }
 
     vkDestroySurfaceKHR(instance, surface, nullptr);
-    vkDestroyInstance(instance, nullptr);
+    destroyVulkanInstance(instance);
     return 0;
 }
