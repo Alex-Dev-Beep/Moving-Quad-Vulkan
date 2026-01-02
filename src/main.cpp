@@ -7,6 +7,7 @@
 #include "instance/instance.hpp"
 #include "../renderer/window/hWnd.h"
 #include "../renderer/surface/surface.h"
+#include "../renderer/device/device.h"
 #include "cleanup/cleanup.h"
 
 HINSTANCE g_hInstance;
@@ -25,11 +26,13 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int)
     
     VkInstance instance;
     VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
-    VkSurfaceKHR surface = CreateSurface(instance, g_hWnd, g_hInstance);
-    
+
     if (createVulkanInstance(&instance) != VK_SUCCESS) {
         std::cout << "Failed to create vulkan instance" << std::endl;
     }
+    
+    VkSurfaceKHR surface = CreateSurface(instance, g_hWnd, g_hInstance);
+    pickPhysicalDevice(instance, physicalDevice);
 
     MSG msg{};
     while (msg.message != WM_QUIT)
