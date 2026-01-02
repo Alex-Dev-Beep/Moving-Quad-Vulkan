@@ -24,11 +24,12 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int)
     g_hWnd = CreateVulkanWindow(800, 600, g_hInstance);
     
     VkInstance instance;
+    VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
+    VkSurfaceKHR surface = CreateSurface(instance, g_hWnd, g_hInstance);
     
     if (createVulkanInstance(&instance) != VK_SUCCESS) {
         std::cout << "Failed to create vulkan instance" << std::endl;
     }
-    VkSurfaceKHR surface = CreateSurface(instance, g_hWnd, g_hInstance);
 
     MSG msg{};
     while (msg.message != WM_QUIT)
