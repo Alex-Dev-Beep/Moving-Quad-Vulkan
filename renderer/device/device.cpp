@@ -13,7 +13,7 @@ void pickPhysicalDevice(VkInstance instance, VkPhysicalDevice& physicalDevice) {
     vkEnumeratePhysicalDevices(instance, &deviceCount, nullptr);
 
     if (deviceCount == 0) {
-        throw std::runtime_error("failed to find GPUs with Vulkan support!");
+        throw std::runtime_error("Failed to find GPUs with Vulkan support!");
     }
 
     std::vector<VkPhysicalDevice> devices(deviceCount);
@@ -31,7 +31,7 @@ void pickPhysicalDevice(VkInstance instance, VkPhysicalDevice& physicalDevice) {
     }
 
     if (candidates.empty() || candidates.rbegin()->first == 0) {
-        throw std::runtime_error("failed to find a suitable GPU!");
+        throw std::runtime_error("Failed to find a suitable GPU!");
     }
 
     physicalDevice = candidates.rbegin()->second;
