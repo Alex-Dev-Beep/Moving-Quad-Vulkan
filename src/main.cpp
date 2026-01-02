@@ -7,6 +7,7 @@
 #include "instance/instance.hpp"
 #include "../renderer/window/hWnd.h"
 #include "../renderer/surface/surface.h"
+#include "cleanup/cleanup.h"
 
 HINSTANCE g_hInstance;
 
@@ -25,7 +26,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int)
     VkInstance instance;
     
     if (createVulkanInstance(&instance) != VK_SUCCESS) {
-        throw std::runtime_error("Failed to create Vulkan instance");
+        std::cout << "Failed to create vulkan instance" << std::endl;
     }
     VkSurfaceKHR surface = CreateSurface(instance, g_hWnd, g_hInstance);
 
@@ -39,7 +40,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int)
         }
     }
 
-    vkDestroySurfaceKHR(instance, surface, nullptr);
-    destroyVulkanInstance(instance);
+    cleanup(instance, surface);
     return 0;
 }
