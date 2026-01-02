@@ -10,7 +10,8 @@ file(GLOB_RECURSE SRC_FILES
     src/*.cpp
 )
 
-add_executable(${PROJECT_NAME} ${SRC_FILES})
+add_executable(${PROJECT_NAME} WIN32
+${SRC_FILES})
 
 find_package(Vulkan REQUIRED)
 
@@ -31,6 +32,10 @@ target_compile_definitions(${PROJECT_NAME}
 
 if (WIN32)
     target_compile_definitions(${PROJECT_NAME} PRIVATE VK_USE_PLATFORM_WIN32_KHR)
+    add_compile_definitions(
+        UNICODE
+        _UNICODE
+    )
 endif()
 
 if (UNIX AND NOT APPLE)
