@@ -11,6 +11,15 @@ LRESULT CALLBACK WindowProc(
 {
     switch (msg)
     {
+        case WM_SETCURSOR:
+        {
+            if (LOWORD(lParam) == HTCLIENT) {
+                SetCursor(LoadCursor(nullptr, IDC_ARROW));
+                return TRUE;
+            }
+            break;
+        }
+
         case WM_DESTROY:
             PostQuitMessage(0);
             return 0;
