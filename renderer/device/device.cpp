@@ -5,6 +5,7 @@
 #include <vector>
 #include <stdexcept>
 #include <map>
+#include <optional>
 
 void pickPhysicalDevice(VkInstance instance, VkPhysicalDevice& physicalDevice) {
     physicalDevice = VK_NULL_HANDLE;
@@ -38,6 +39,10 @@ void pickPhysicalDevice(VkInstance instance, VkPhysicalDevice& physicalDevice) {
 }
 
 int rateDeviceSuitability(VkPhysicalDevice device) {
+    QueueFamilyIndices indices = findQueueFamilies(device);
+    if (!indices.isComplete()) {
+        return 0;
+    }
 
     VkPhysicalDeviceProperties deviceProperties;
     VkPhysicalDeviceFeatures deviceFeatures;
@@ -53,4 +58,26 @@ int rateDeviceSuitability(VkPhysicalDevice device) {
     score += deviceProperties.limits.maxImageDimension2D;
 
     return score;
+}
+
+QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device) {
+    QueueFamilyIndices indices;
+
+    uint32_t queueFamilyCount = 0;
+    vkGetPhysicalDeviceQueueFamilyProperties(device, &queueFamilyCount, nullptr);
+
+    std::vector<VkQueueFamilyProperties> queueFamilies(queueFamilyCount);
+    vkGetPhysicalDeviceQueueFamilyProperties(
+        device, &queueFamilyCount, queueFamilies.data());
+
+    for (uint32_t i = 0; i < queueFamilyCount; i++) {
+        if (queueFamilies[i].queueCount > 0 &&
+            queueFamilies[i].queueFlags & VK_QUEUE_GRAPHICS_BIT) {
+            indices.graphicsFamily = i;
+        }
+
+        if (indices.isComplete()) break;
+    }
+
+    return indices;
 }
