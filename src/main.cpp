@@ -26,6 +26,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int)
     
     VkInstance instance;
     VkPhysicalDevice physicalDevice = VK_NULL_HANDLE;
+    VkQueue graphicsQueue;
 
     if (createVulkanInstance(&instance) != VK_SUCCESS) {
         std::cout << "Failed to create vulkan instance" << std::endl;
@@ -33,6 +34,9 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int)
     
     VkSurfaceKHR surface = CreateSurface(instance, g_hWnd, g_hInstance);
     pickPhysicalDevice(instance, physicalDevice);
+    QueueFamilyIndices indices = findQueueFamilies(physicalDevice);
+    VkDevice device = createLogicalDevice(physicalDevice, indices);
+    vkGetDeviceQueue(device, indices.graphicsFamily.value(), 0, &graphicsQueue);
 
     MSG msg{};
     while (msg.message != WM_QUIT)
@@ -44,6 +48,6 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE, LPSTR, int)
         }
     }
 
-    cleanup(instance, surface);
+    cleanup(instance, surface, device);
     return 0;
 }

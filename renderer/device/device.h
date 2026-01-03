@@ -12,3 +12,4 @@ struct QueueFamilyIndices {
 };
 
 QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device);
+VkDevice createLogicalDevice(VkPhysicalDevice physicalDevice, const QueueFamilyIndices& indices);
